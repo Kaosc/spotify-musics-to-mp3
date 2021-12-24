@@ -31,9 +31,9 @@ class SpotifyMusicDownloader:
         self.trackLinks = []
 
         # Paths
-        self.savePath = 'SpotifyPlaylistDownloader\Downloads'
-        self.textPath = 'SpotifyPlaylistDownloader\musiclinklist.txt'
-        self.driverPath = 'driver/chromedriver.exe'
+        self.savePath = 'spotify-playlist-downloader\Downloads'            # <------ download path goes here
+        self.textPath = 'spotify-playlist-downloader\musiclinklist.txt'    # <------ text file path goes here
+        self.driverPath = 'driver/chromedriver.exe'                        # <------ driver path goes here   
 
     def getSongNamesFromSpotifyPlaylist(self):
         os.system("cls")
