@@ -36,3 +36,6 @@ Run the "downloader.py" and paste your spotify playlist link. Yeah, that's all.
         self.textPath = 'SpotifyPlaylistDownloader\musiclinklist.txt'
         self.driverPath = 'driver/chromedriver.exe'
 
+## Console look
+
+![console look](https://i.ibb.co/znCymsc/Ekran-g-r-nt-s-2021-12-26-140751.png)
