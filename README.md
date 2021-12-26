@@ -5,15 +5,15 @@
 ###  Pip's
 Selenium
     
-    - pip install selenium
+    pip install selenium
 
 Colored 
 
-    -pip install colored
+    pip install colored
     
 Pytube
 
-    - pip install pytube
+    pip install pytube
 ### Chrome Driver
     
  Current Chrome Driver version: 96
