@@ -1,4 +1,4 @@
-# Download your spotify playlist tracks as a mp3 file with out any key or token requirements.
+# Download your spotify playlist or just spesific tracks as a mp3 file with out any key or token requirements.
 
 ## Requirements
 
@@ -23,7 +23,7 @@ Pytube
  
 ## Usage
 
-Run the "downloader.py" and paste your spotify playlist link. Yeah, that's all.
+Run the "downloader.py", choose prefered download option and paste your spotify playlist/song link. Yeah, that's all.
     
 ## Notes
 
