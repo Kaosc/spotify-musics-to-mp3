@@ -1,11 +1,14 @@
 from __future__ import print_function, unicode_literals
+from selenium.webdriver.common import by
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 from pytube import YouTube
+from selenium.webdriver.common.by import By
 from colored import fg, attr
 import warnings
 import time
 import os
+import sys
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -30,14 +33,56 @@ class SpotifyMusicDownloader:
         self.trackNamesList = []
         self.trackLinks = []
 
-        # Paths
-        self.savePath = 'spotify-playlist-downloader\Downloads'            # <------ download path goes here
-        self.textPath = 'spotify-playlist-downloader\musiclinklist.txt'    # <------ text file path goes here
-        self.driverPath = 'driver/chromedriver.exe'                        # <------ driver path goes here   
+        # PATHS
+        self.savePath = 'spotify-musics-to-mp3\Downloads'            # <------ download path goes here
+        self.textPath = 'spotify-musics-to-mp3\musiclinklist.txt'    # <------ text file path goes here
+        self.driverPath = 'driver/chromedriver.exe'                  # <------ driver path goes here   
+
+    def soloDownloader(self):
+        os.system("cls")
+        spotifySongLink = str(input('%s\nPASTE THE SONG LINK: %s' % (fg(33), attr(0))))
+
+        self.browser = webdriver.Chrome(self.driverPath, chrome_options=self.browserProfile)
+        os.system("cls")
+
+        print("%s\nGETTING SONG NAME...\n%s" % (fg(46), attr(0)))
+
+        self.browser.get(spotifySongLink)
+
+        time.sleep(2)
+
+        trackName = self.browser.find_element(By.TAG_NAME, 'h1').text
+        trackArtist = self.browser.find_element(By.XPATH, '//figure/div/img').get_attribute("alt")
+        trackResult = trackArtist + " " + trackName
+
+        self.browser.get(f'https://www.youtube.com/results?search_query={trackResult}')
+        trackLink = self.browser.find_element(By.XPATH, '//*[@id="dismissible"]/ytd-thumbnail/a').get_attribute("href")
+
+        os.system("cls")
+        print("%s\nDOWNLOADING...\n%s" % (fg(46), attr(0)))
+
+        yt = YouTube(trackLink)
+            
+        video = yt.streams.filter(only_audio=True).first()
+        out_file = video.download(output_path=self.savePath)
+        base, ext = os.path.splitext(out_file)
+        new_file = base + '.mp3'
+
+        os.system("cls")
+
+        try:
+            os.rename(out_file, new_file)
+            print(f"%s{yt.title} : Downloaded%s" % (fg(99), attr(0)))
+        except FileExistsError:
+            os.remove(out_file)
+            print(f"%s{yt.title} Already Downloaded!%s" % (fg(3), attr(0)))
+
+        print("%s\nSong Downloaded Successfully!\n%s" % (fg(2), attr(0)))
+        print(f"%sDirectory --> {self.savePath}\n%s" % (fg(1), attr(0)))
 
     def getSongNamesFromSpotifyPlaylist(self):
         os.system("cls")
-        spotifyPlayListLink = str(input('Paste the playlist link: '))
+        spotifyPlayListLink = str(input('%s\nPASTE THE PLAYLIST LINK: %s' % (fg(33), attr(0))))
 
         self.browser = webdriver.Chrome(self.driverPath, chrome_options=self.browserProfile)
         action = webdriver.ActionChains(self.browser)
@@ -51,22 +96,22 @@ class SpotifyMusicDownloader:
 
         time.sleep(3)
 
-        totalTrackText = self.browser.find_element_by_xpath('//*[@id="main"]/div/div[2]/div[3]/main/div[2]/div[2]/div/div/div[2]/section/div[1]/div[5]/div/span').text
+        totalTrackText = self.browser.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[3]/main/div[2]/div[2]/div/div/div[2]/section/div[1]/div[5]/div/span').text
 
         if "like" in totalTrackText:
-            totalTrackText = self.browser.find_element_by_xpath('//*[@id="main"]/div/div[2]/div[3]/main/div[2]/div[2]/div/div/div[2]/section/div[1]/div[5]/div/span[2]').text
+            totalTrackText = self.browser.find_element(By.XPATH,'//*[@id="main"]/div/div[2]/div[3]/main/div[2]/div[2]/div/div/div[2]/section/div[1]/div[5]/div/span[2]').text
         totalTrackSplitedText = str(totalTrackText).split()
         self.totalTrackNum = int(totalTrackSplitedText[0])
         
-        self.browser.find_element_by_xpath(f'//*[@aria-rowindex="1"]').click()
+        self.browser.find_element(By.XPATH,f'//*[@aria-rowindex="1"]').click()
 
         currentTrackNum = 2
         while currentTrackNum <= self.totalTrackNum+1:
-            selectedTrackName = self.browser.find_element_by_xpath(f'//*[@aria-rowindex="{currentTrackNum}"]/div/div[2]/div/div')
-            selectedTrackArtist = self.browser.find_element_by_xpath(f'//*[@aria-rowindex="{currentTrackNum}"]/div/div[2]/div/span')
+            selectedTrackName = self.browser.find_element(By.XPATH, f'//*[@aria-rowindex="{currentTrackNum}"]/div/div[2]/div/div')
+            selectedTrackArtist = self.browser.find_element(By.XPATH, f'//*[@aria-rowindex="{currentTrackNum}"]/div/div[2]/div/span')
 
             if selectedTrackArtist.text == "E": # prevents explicit content icon
-                selectedTrackArtist = self.browser.find_element_by_xpath(f'//*[@aria-rowindex="{currentTrackNum}"]/div/div[2]/div/span[2]')
+                selectedTrackArtist = self.browser.find_element(By.XPATH, f'//*[@aria-rowindex="{currentTrackNum}"]/div/div[2]/div/span[2]')
             
             print(f"%s{str(currentTrackNum-1)} : {selectedTrackArtist.text} : {selectedTrackName.text}%s" % (fg(63), attr(0)))
             resultTrack = selectedTrackArtist.text + " " + selectedTrackName.text  
@@ -90,7 +135,7 @@ class SpotifyMusicDownloader:
         currentTrackNum = 0
         while currentTrackNum < self.totalTrackNum:
             self.browser.get(f'https://www.youtube.com/results?search_query={self.trackNamesList[currentTrackNum]}')
-            trackLink = self.browser.find_element_by_xpath('//*[@id="dismissible"]/ytd-thumbnail/a').get_attribute("href")
+            trackLink = self.browser.find_element(By.XPATH, '//*[@id="dismissible"]/ytd-thumbnail/a').get_attribute("href")
             print(f"%s{currentTrackNum+1} : {self.trackNamesList[currentTrackNum]} : {trackLink} %s" % (fg(98), attr(0)))
             self.trackLinks.append(str(trackLink))
             file.write(f"{str(currentTrackNum+1)} {self.trackNamesList[currentTrackNum]} : {trackLink}\n")
@@ -131,5 +176,21 @@ class SpotifyMusicDownloader:
         self.download()
 
 spmd = SpotifyMusicDownloader()
-spmd.execute()
+
+while True:
+    print("")
+    print("%s - - - SPOTIFY MUSIC DOWNLOADER - - - %s" % (fg(82), attr(0)))
+    opt = input("""%s
+    [1]- Download Playlist
+    [2]- Download Song
+    [3]- Exit \n
+    Enter Number: %s""" % (fg(82), attr(0)))
+    if opt == "3":
+        sys.exit()
+    elif opt == "2":
+        spmd.soloDownloader()
+    elif opt == "1":
+        spmd.execute()
+
+
 
