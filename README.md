@@ -1,19 +1,19 @@
-# Download your spotify playlist tracks as a mp3 file with out any key or token requirements.
+# Download your spotify playlist or just spesific tracks as a mp3 file without any key or token requirements.
 
 ## Requirements
 
 ###  Pip's
 Selenium
     
-    - pip install selenium
+    pip install selenium
 
 Colored 
 
-    -pip install colored
+    pip install colored
     
 Pytube
 
-    - pip install pytube
+    pip install pytube
 ### Chrome Driver
     
  Current Chrome Driver version: 96
@@ -23,7 +23,7 @@ Pytube
  
 ## Usage
 
-Run the "downloader.py" and paste your spotify playlist link. Yeah, that's all.
+Run the "downloader.py", choose prefered download option and paste your spotify playlist/song link. Yeah, that's all.
     
 ## Notes
 
@@ -36,3 +36,6 @@ Run the "downloader.py" and paste your spotify playlist link. Yeah, that's all.
         self.textPath = 'SpotifyPlaylistDownloader\musiclinklist.txt'
         self.driverPath = 'driver/chromedriver.exe'
 
+## Console look
+
+![console look](https://i.ibb.co/znCymsc/Ekran-g-r-nt-s-2021-12-26-140751.png)
