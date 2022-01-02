@@ -1,4 +1,4 @@
-# Download your spotify playlist or just spesific tracks as a mp3 file without any key or token requirements.
+# Download your spotify playlist or just spesific tracks as a mp3 file without any API key or token requirements.
 
 ## Requirements
 
