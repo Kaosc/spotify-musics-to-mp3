@@ -30,10 +30,11 @@ Run the "downloader.py", choose prefered download option and paste your spotify 
 - The names of the tracks and youtube links are will be collected in a text file.
 - Downloaded tracks will be appear in downloads folder. 
 
-#### If you want to change the folder paths, you have to define your own paths in code file.
+#### If you want to change the folder paths, you have to define your own paths in _paths file.
 
-        self.savePath = 'SpotifyPlaylistDownloader\Downloads'
-        self.textPath = 'SpotifyPlaylistDownloader\musiclinklist.txt'
+        self.savePath = 'Downloads'
+        self.textPath = Texts/downloaded-links.txt'
+        nTextPath = 'Texts/skipped-links.txt'
         self.driverPath = 'driver/chromedriver.exe'
 
 ## Console look
