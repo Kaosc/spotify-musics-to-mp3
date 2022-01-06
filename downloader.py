@@ -35,6 +35,7 @@ class SpotifyMusicDownloader:
         self.islinkVerified = False
         self.trackNamesList = []
         self.trackLinks = []
+        self.AudioFormat = ".mp3" # .m4a
 
         # PATHS
         self.savePath = _paths.savePath
@@ -85,7 +86,7 @@ class SpotifyMusicDownloader:
             video = yt.streams.filter(only_audio=True).first()
             out_file = video.download(output_path=self.savePath)
             base, ext = os.path.splitext(out_file)
-            new_file = base + '.mp3'
+            new_file = base + self.AudioFormat
 
             os.system("cls")
 
@@ -203,7 +204,7 @@ class SpotifyMusicDownloader:
 
             out_file = video.download(output_path=self.savePath)
             base, ext = os.path.splitext(out_file)
-            new_file = base + '.mp3'
+            new_file = base + self.AudioFormat
 
             try:
                 os.rename(out_file, new_file)
