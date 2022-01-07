@@ -21,6 +21,19 @@ Pytube
  Download the latest [Chrome Driver](https://chromedriver.chromium.org/downloads). It must be the same version of Chome with in your computer.
  Add chromedriver.exe in to "driver" folder.
  
+ ### FFmpeg (optional)
+ 
+ There are 2 download options. If you like to use "youtube.dl" you need to install FFmpeg.
+ 
+ Install FFmpeg
+ 
+ #### Git
+    
+    git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
+ #### Windows
+ 
+ Watch this video https://youtu.be/r1AtmY-RMyQ
+ 
 ## Usage
 
 Run the "downloader.py", choose prefered download option and paste your spotify playlist/song link. Yeah, that's all.
