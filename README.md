@@ -15,9 +15,9 @@ Pytube
 
     pip install pytube
     
- youtube_dl
+ yt_dlp
  
-    pip install youtube_dl
+    pip install yt-dlp
     
 ### Chrome Driver
     
