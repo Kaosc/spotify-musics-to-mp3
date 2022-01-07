@@ -30,7 +30,7 @@ Pytube
  
  There are 2 download options. If you like to use "youtube.dl" you need to install FFmpeg.
  
- Install FFmpeg
+ Installing FFmpeg
  
  #### Git
     
