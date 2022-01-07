@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from pytube import exceptions
 from pytube import YouTube
+import youtube_dl
 from colored import fg, attr
 import warnings
 import _paths
@@ -35,7 +36,8 @@ class SpotifyMusicDownloader:
         self.islinkVerified = False
         self.trackNamesList = []
         self.trackLinks = []
-        self.AudioFormat = ".mp3" # .m4a
+        self.YTDLAudioFormat = 'mp3' # m4a
+        self.PYTUBEAudioFormat = '.mp3' # .m4a
 
         # PATHS
         self.savePath = _paths.savePath
@@ -164,7 +166,7 @@ class SpotifyMusicDownloader:
 
         file = open(self.textPath,"w")
 
-        print("%s\n -> Collecting songs from Youtube\n%s" % (fg(9), attr(0)))
+        print("%s\n -> Collecting songs from Youtube\n%s" % (fg(1), attr(0)))
 
         currentTrackNum = 0
         while currentTrackNum < self.totalTrackNum:
@@ -183,7 +185,7 @@ class SpotifyMusicDownloader:
         self.browser.close()
         file.close()
 
-    def download(self):
+    def pytube(self):
         os.system("cls")
         file = open(self.nTextPath,"w")
 
@@ -204,7 +206,7 @@ class SpotifyMusicDownloader:
 
             out_file = video.download(output_path=self.savePath)
             base, ext = os.path.splitext(out_file)
-            new_file = base + self.AudioFormat
+            new_file = base + self.PYTUBEAudioFormat
 
             try:
                 os.rename(out_file, new_file)
@@ -219,10 +221,42 @@ class SpotifyMusicDownloader:
         print(f"%sDirectory --> {self.savePath}\n%s" % (fg(1), attr(0)))
         self.islinkVerified = False
 
-    def execute(self):
+    def youtubedl(self):
+        
+        print("%s\nDownloading Songs... This may take some time.\n%s" % (fg(2), attr(0)))
+
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': self.YTDLAudioFormat,
+                'preferredquality': '320',
+            }],
+            'outtmpl': self.savePath + '/%(title)s.%(ext)s',
+        }
+
+        currentTrackNum = 0
+        while currentTrackNum < self.totalTrackNum:
+            link = self.trackLinks[currentTrackNum]
+
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([link])
+
+            os.system('cls')
+            currentTrackNum+=1
+
+        print("%s\nAll Songs Downloaded Successfully!\n%s" % (fg(2), attr(0)))
+        print(f"%sDirectory --> {self.savePath}\n%s" % (fg(1), attr(0)))
+        self.islinkVerified = False
+
+    def execute(self,downloadOption):
         self.getSongNamesFromSpotifyPlaylist()
         self.getYoutubeLinks()
-        self.download()
+
+        if downloadOption == "1":
+            self.pytube()
+        elif downloadOption == "2":
+            self.youtubedl()
 
 spmd = SpotifyMusicDownloader()
 
@@ -230,16 +264,34 @@ while True:
     print("")
     print("%s - - - SPOTIFY MUSIC DOWNLOADER - - - %s" % (fg(82), attr(0)))
     opt = input("""%s
-    [1]- Download Playlist
-    [2]- Download Song
-    [3]- Exit \n
+    [1] - Download Playlist
+    [2] - Download Song
+    [3] - Exit \n
     Enter Number: %s""" % (fg(82), attr(0)))
     if opt == "3":
         sys.exit()
     elif opt == "2":
         spmd.soloDownloader()
     elif opt == "1":
-        spmd.execute()
+
+        while True:
+            dOp = input("""%s 
+    Choose A Download Opiton
+
+    [1] - pytube [Fast / It may give a reading error on some devices.]
+    [2] - youtube_dl [It may be slow. Pretty much compatible with all devices.]
+
+    Enter Number: %s""" % (fg(105), attr(0)))
+
+            if dOp == "1" or dOp == "2":
+                spmd.execute(dOp)
+                break
+            else:
+                print("%s\nPlease enter the correct number%s" % (fg(1), attr(0)))
+                
+
+
+
 
 
 
