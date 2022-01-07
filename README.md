@@ -14,18 +14,23 @@ Colored
 Pytube
 
     pip install pytube
+    
+ yt_dlp
+ 
+    pip install yt-dlp
+    
 ### Chrome Driver
     
- Current Chrome Driver version: 96
+ Current Chrome Driver version: 97
  
- Download the latest [Chrome Driver](https://chromedriver.chromium.org/downloads). It must be the same version of Chome with in your computer.
+ Download the latest [Chrome Driver](https://chromedriver.chromium.org/downloads). It must be the same version of Chrome with in your computer.
  Add chromedriver.exe in to "driver" folder.
  
  ### FFmpeg (optional)
  
- There are 2 download options. If you like to use "youtube.dl" you need to install FFmpeg.
+ There are 2 download options. If you like to use "yt-dlp" you need to install FFmpeg.
  
- Install FFmpeg
+ Installing FFmpeg
  
  #### Git
     
