@@ -5,7 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from pytube import exceptions
 from pytube import YouTube
-import youtube_dl
+from yt_dlp import YoutubeDL
+from youtube_dl.utils import DownloadError, ExtractorError
 from colored import fg, attr
 import warnings
 import _paths
@@ -49,7 +50,7 @@ class SpotifyMusicDownloader:
         os.system("cls")
 
         while self.islinkVerified == False:
-            spotifySongLink = str(input('%s\nPASTE THE PLAYLIST LINK: %s' % (fg(33), attr(0))))
+            spotifySongLink = str(input('%s\nPASTE THE SONG LINK: %s' % (fg(33), attr(0))))
 
             if "https://open.spotify.com/track" in spotifySongLink:
                 self.islinkVerified = True
@@ -63,6 +64,8 @@ class SpotifyMusicDownloader:
 
         print("%s\nGETTING SONG NAME...\n%s" % (fg(46), attr(0)))
 
+        # SPOTIFY
+
         self.browser.get(spotifySongLink)
 
         time.sleep(2)
@@ -75,6 +78,8 @@ class SpotifyMusicDownloader:
             trackArtist = self.browser.find_element(By.XPATH, '//*[@property="og:description"]').get_attribute("content")
             trackArtistSplited = trackArtist.split("· ")
             trackLinkResult = trackArtistSplited[0] + " " + trackName
+        
+        # YOUTUBE
 
         self.browser.get(f'https://www.youtube.com/results?search_query={trackLinkResult}')
         trackLink = self.browser.find_element(By.XPATH, '//*[@id="dismissible"]/ytd-thumbnail/a').get_attribute("href")
@@ -82,28 +87,28 @@ class SpotifyMusicDownloader:
         os.system("cls")
         print("%s\nDOWNLOADING...\n%s" % (fg(46), attr(0)))
 
-        yt = YouTube(trackLink)
+        # DOWNLOAD
+
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': self.YTDLAudioFormat,
+                'preferredquality': '320',
+            }],
+            'outtmpl': self.savePath + '/%(title)s.%(ext)s',
+        }
 
         try:
-            video = yt.streams.filter(only_audio=True).first()
-            out_file = video.download(output_path=self.savePath)
-            base, ext = os.path.splitext(out_file)
-            new_file = base + self.AudioFormat
+            with YoutubeDL(ydl_opts) as ydl:
+                ydl.download([trackLink])
+        except (DownloadError, ExtractorError) :
+            print(f"%sSomethings goes wrong while downloading!%s" % (fg(1), attr(0)))
 
-            os.system("cls")
+        os.system('cls')
 
-            try:
-                os.rename(out_file, new_file)
-                print(f"%s{yt.title} : Downloaded%s" % (fg(99), attr(0)))
-            except FileExistsError:
-                os.remove(out_file)
-                print(f"%s{yt.title} Already Downloaded!%s" % (fg(3), attr(0)))
-
-            print("%s\nSong Downloaded Successfully!\n%s" % (fg(2), attr(0)))
-            print(f"%sDirectory --> {self.savePath}\n%s" % (fg(1), attr(0)))
-        except exceptions.AgeRestrictedError:
-            print(f"%s{yt.title} is have age restrict. Cannot download it!%s" % (fg(1), attr(0)))
-
+        print("%s\nSong Downloaded Successfully!\n%s" % (fg(2), attr(0)))
+        print(f"%sDestination --> {self.savePath}\n%s" % (fg(1), attr(0)))
         self.islinkVerified = False
 
     def getSongNamesFromSpotifyPlaylist(self):
@@ -218,7 +223,7 @@ class SpotifyMusicDownloader:
             currentTrackNum+=1
 
         print("%s\nAll Songs Downloaded Successfully!\n%s" % (fg(2), attr(0)))
-        print(f"%sDirectory --> {self.savePath}\n%s" % (fg(1), attr(0)))
+        print(f"%sDestination --> {self.savePath}\n%s" % (fg(1), attr(0)))
         self.islinkVerified = False
 
     def youtubedl(self):
@@ -238,15 +243,19 @@ class SpotifyMusicDownloader:
         currentTrackNum = 0
         while currentTrackNum < self.totalTrackNum:
             link = self.trackLinks[currentTrackNum]
+            print(f"%s[{currentTrackNum+1}/{str(self.totalTrackNum)}]: {self.trackNamesList[currentTrackNum]} : Downloaded%s" % (fg(99), attr(0)))
 
-            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([link])
+            try:
+                with YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([link])
+            except (DownloadError, ExtractorError) :
+                print(f"%s[{currentTrackNum+1}/{str(self.totalTrackNum)}] : {self.trackNamesList[currentTrackNum]} : Somethings goes wrong while downloading!%s" % (fg(1), attr(0)))
 
             os.system('cls')
             currentTrackNum+=1
 
         print("%s\nAll Songs Downloaded Successfully!\n%s" % (fg(2), attr(0)))
-        print(f"%sDirectory --> {self.savePath}\n%s" % (fg(1), attr(0)))
+        print(f"%sDestination --> {self.savePath}\n%s" % (fg(1), attr(0)))
         self.islinkVerified = False
 
     def execute(self,downloadOption):
@@ -278,8 +287,8 @@ while True:
             dOp = input("""%s 
     Choose A Download Opiton
 
-    [1] - pytube [Fast / It may give a reading error on some devices.]
-    [2] - youtube_dl [It may be slow. Pretty much compatible with all devices.]
+    [1] - pytube
+    [2] - yt_dlp
 
     Enter Number: %s""" % (fg(105), attr(0)))
 
@@ -288,8 +297,6 @@ while True:
                 break
             else:
                 print("%s\nPlease enter the correct number%s" % (fg(1), attr(0)))
-                
-
 
 
 
