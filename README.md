@@ -23,7 +23,7 @@ Pytube
     
  Current Chrome Driver version: 96
  
- Download the latest [Chrome Driver](https://chromedriver.chromium.org/downloads). It must be the same version of Chome with in your computer.
+ Download the latest [Chrome Driver](https://chromedriver.chromium.org/downloads). It must be the same version of Chrome with in your computer.
  Add chromedriver.exe in to "driver" folder.
  
  ### FFmpeg (optional)
