@@ -14,6 +14,11 @@ Colored
 Pytube
 
     pip install pytube
+    
+ youtube_dl
+ 
+    pip install youtube_dl
+    
 ### Chrome Driver
     
  Current Chrome Driver version: 96
