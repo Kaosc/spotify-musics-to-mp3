@@ -14,11 +14,13 @@ import time
 import sys
 import os
 
+## IGNORE CONSOLE WARNINGS ##
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 class SpotifyMusicDownloader:
 
     def __init__ (self):
+        ## CHROME OPTIONS ##
         self.browserProfile = webdriver.ChromeOptions()
         self.browserProfile.headless = True
         self.browserProfile.add_argument("--log-level=3")
@@ -33,22 +35,23 @@ class SpotifyMusicDownloader:
         self.browserProfile.add_experimental_option('prefs',{"intl.accept_languages":"en,en_US"})
         self.browserProfile.add_experimental_option("excludeSwitches", ["disable-popup-blocking"])
         self.browserProfile.add_experimental_option('prefs', {"profile.default_content_setting_values.notifications" : "2"})
-
+        ## VERIABLES ##
         self.islinkVerified = False
         self.trackNamesList = []
         self.trackLinks = []
         self.YTDLAudioFormat = 'mp3' # m4a
         self.PYTUBEAudioFormat = '.mp3' # .m4a
-
         # PATHS
         self.savePath = _paths.savePath
         self.textPath = _paths.textPath
         self.nTextPath = _paths.nTextPath
         self.driverPath = _paths.driverPath
 
+    ## SOLO DOWNLOADER START ##
     def soloDownloader(self):
         os.system("cls")
 
+        # CHECK IN
         while self.islinkVerified == False:
             spotifySongLink = str(input('%s\nPASTE THE SONG LINK: %s' % (fg(33), attr(0))))
 
@@ -65,7 +68,6 @@ class SpotifyMusicDownloader:
         print("%s\nGETTING SONG NAME...\n%s" % (fg(46), attr(0)))
 
         # SPOTIFY
-
         self.browser.get(spotifySongLink)
 
         time.sleep(2)
@@ -80,7 +82,6 @@ class SpotifyMusicDownloader:
             trackLinkResult = trackArtistSplited[0] + " " + trackName
         
         # YOUTUBE
-
         self.browser.get(f'https://www.youtube.com/results?search_query={trackLinkResult}')
         trackLink = self.browser.find_element(By.XPATH, '//*[@id="dismissible"]/ytd-thumbnail/a').get_attribute("href")
 
@@ -88,7 +89,6 @@ class SpotifyMusicDownloader:
         print("%s\nDOWNLOADING...\n%s" % (fg(46), attr(0)))
 
         # DOWNLOAD
-
         ydl_opts = {
             'format': 'bestaudio/best',
             'postprocessors': [{
@@ -110,7 +110,10 @@ class SpotifyMusicDownloader:
         print("%s\nSong Downloaded Successfully!\n%s" % (fg(2), attr(0)))
         print(f"%sDestination --> {self.savePath}\n%s" % (fg(1), attr(0)))
         self.islinkVerified = False
+        self.browser.close()
+    ## SOLO DOWNLOADER END ##
 
+    ## SPOTIFY START ##
     def getSongNamesFromSpotifyPlaylist(self):
         os.system("cls")
 
@@ -164,7 +167,9 @@ class SpotifyMusicDownloader:
             
         print("%s\nDONE! %s" % (fg(46), attr(0)))
         self.browser.close()
+    ## SPOTIFY END ##
 
+    ## YOUTUBE START ##
     def getYoutubeLinks(self):
         self.browser = webdriver.Chrome(self.driverPath, chrome_options=self.browserProfile)
         os.system("cls")
@@ -189,7 +194,9 @@ class SpotifyMusicDownloader:
         
         self.browser.close()
         file.close()
+    ## YOUTUBE END ##
 
+    ## PYTUBE START ##
     def pytube(self):
         os.system("cls")
         file = open(self.nTextPath,"w")
@@ -225,7 +232,9 @@ class SpotifyMusicDownloader:
         print("%s\nAll Songs Downloaded Successfully!\n%s" % (fg(2), attr(0)))
         print(f"%sDestination --> {self.savePath}\n%s" % (fg(1), attr(0)))
         self.islinkVerified = False
+    ## PYTUBE END ##
 
+    ## YT_DLP START ##
     def youtubedl(self):
         
         print("%s\nDownloading Songs... This may take some time.\n%s" % (fg(2), attr(0)))
@@ -243,7 +252,7 @@ class SpotifyMusicDownloader:
         currentTrackNum = 0
         while currentTrackNum < self.totalTrackNum:
             link = self.trackLinks[currentTrackNum]
-            print(f"%s[{currentTrackNum+1}/{str(self.totalTrackNum)}]: {self.trackNamesList[currentTrackNum]} : Downloaded%s" % (fg(99), attr(0)))
+            print(f"%s[{currentTrackNum+1}/{str(self.totalTrackNum)}]: {self.trackNamesList[currentTrackNum]} : Downloading%s" % (fg(99), attr(0)))
 
             try:
                 with YoutubeDL(ydl_opts) as ydl:
@@ -257,7 +266,9 @@ class SpotifyMusicDownloader:
         print("%s\nAll Songs Downloaded Successfully!\n%s" % (fg(2), attr(0)))
         print(f"%sDestination --> {self.savePath}\n%s" % (fg(1), attr(0)))
         self.islinkVerified = False
+    ## YT_DLP END ##
 
+    ## EXECUTE START ##
     def execute(self,downloadOption):
         self.getSongNamesFromSpotifyPlaylist()
         self.getYoutubeLinks()
@@ -266,6 +277,7 @@ class SpotifyMusicDownloader:
             self.pytube()
         elif downloadOption == "2":
             self.youtubedl()
+    ## EXECUTE END ##
 
 spmd = SpotifyMusicDownloader()
 
