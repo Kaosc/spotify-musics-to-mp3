@@ -26,9 +26,9 @@ Pytube
  Download the latest [Chrome Driver](https://chromedriver.chromium.org/downloads). It must be the same version of Chrome with in your computer.
  Add chromedriver.exe in to "driver" folder.
  
- ### FFmpeg (optional)
- 
- There are 2 download options. If you like to use "yt-dlp" you need to install FFmpeg.
+ ### FFmpeg
+  
+ There are 2 download options for downloading playlist. If you like to use "yt-dlp" you need to install FFmpeg.
  
  Installing FFmpeg
  
