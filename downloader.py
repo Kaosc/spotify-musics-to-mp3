@@ -70,7 +70,7 @@ class SpotifyMusicDownloader:
         # SPOTIFY
         self.browser.get(spotifySongLink)
 
-        time.sleep(2)
+        time.sleep(2) # WAIT TIMES ARE DEPENDS ON INTERNET CONNECTION SPEED
 
         trackName = self.browser.find_element(By.TAG_NAME, 'h1').text
         try:
@@ -137,11 +137,11 @@ class SpotifyMusicDownloader:
         self.browser.back()
         self.browser.get(spotifyPlayListLink)
 
-        time.sleep(3)
+        time.sleep(3) # WAIT TIMES ARE DEPENDS ON INTERNET CONNECTION SPEED
 
-        totalTrackText = self.browser.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[3]/main/div[2]/div[2]/div/div/div[2]/section/div[1]/div[5]/div/span').text
+        totalTrackText = self.browser.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/main/section/div[1]/div[5]/div/span').text
         if "like" in totalTrackText:
-            totalTrackText = self.browser.find_element(By.XPATH,'//*[@id="main"]/div/div[2]/div[3]/main/div[2]/div[2]/div/div/div[2]/section/div[1]/div[5]/div/span[2]').text
+            totalTrackText = self.browser.find_element(By.XPATH,'//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/main/section/div[1]/div[5]/div/span[2]').text
         
         totalTrackSplitedText = str(totalTrackText).split()
         self.totalTrackNum = int(totalTrackSplitedText[0])
@@ -163,7 +163,7 @@ class SpotifyMusicDownloader:
             self.trackNamesList.append(resultTrack)
             action.key_down(Keys.ARROW_DOWN).perform()
             currentTrackNum+=1
-            time.sleep(0.1)
+            time.sleep(0.1) # WAIT TIMES ARE DEPENDS ON INTERNET CONNECTION SPEED
             
         print("%s\nDONE! %s" % (fg(46), attr(0)))
         self.browser.close()
@@ -181,6 +181,7 @@ class SpotifyMusicDownloader:
         currentTrackNum = 0
         while currentTrackNum < self.totalTrackNum:
             self.browser.get(f'https://www.youtube.com/results?search_query={self.trackNamesList[currentTrackNum]}')
+            time.sleep(1) # WAIT TIMES ARE DEPENDS ON INTERNET CONNECTION SPEED
             trackLink = self.browser.find_element(By.XPATH, '//*[@id="dismissible"]/ytd-thumbnail/a').get_attribute("href")
             print(f"%s[{currentTrackNum+1}/{str(self.totalTrackNum)}] : {self.trackNamesList[currentTrackNum]} : {trackLink} %s" % (fg(98), attr(0)))
             self.trackLinks.append(str(trackLink))
