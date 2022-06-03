@@ -22,7 +22,7 @@ class SpotifyMusicDownloader:
     def __init__ (self):
         ## CHROME OPTIONS ##
         self.browserProfile = webdriver.ChromeOptions()
-        self.browserProfile.headless = True
+        # self.browserProfile.headless = True
         self.browserProfile.add_argument("--log-level=3")
         self.browserProfile.add_argument('--lang=en')
         self.browserProfile.add_argument("--disable-notifications")
@@ -139,9 +139,9 @@ class SpotifyMusicDownloader:
 
         time.sleep(3) # WAIT TIMES ARE DEPENDS ON INTERNET CONNECTION SPEED
 
-        totalTrackText = self.browser.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/main/section/div[1]/div[5]/div/span').text
-        if "like" in totalTrackText:
-            totalTrackText = self.browser.find_element(By.XPATH,'//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/main/section/div[1]/div[5]/div/span[2]').text
+        totalTrackText = self.browser.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/main/div/section/div[1]/div[5]/div/span').text
+        if "like" in totalTrackText: #                           
+            totalTrackText = self.browser.find_element(By.XPATH,'//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/main/div/section/div[1]/div[5]/div/span[2]').text
         
         totalTrackSplitedText = str(totalTrackText).split()
         self.totalTrackNum = int(totalTrackSplitedText[0])
