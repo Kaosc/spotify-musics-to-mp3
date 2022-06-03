@@ -22,7 +22,7 @@ class SpotifyMusicDownloader:
     def __init__ (self):
         ## CHROME OPTIONS ##
         self.browserProfile = webdriver.ChromeOptions()
-        # self.browserProfile.headless = True
+        self.browserProfile.headless = True
         self.browserProfile.add_argument("--log-level=3")
         self.browserProfile.add_argument('--lang=en')
         self.browserProfile.add_argument("--disable-notifications")
