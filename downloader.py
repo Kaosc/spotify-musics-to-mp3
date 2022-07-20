@@ -17,12 +17,24 @@ import os
 ## IGNORE CONSOLE WARNINGS ##
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+"""
+* The code may give error depends on your internet connection. In this case
+please increase the wait times where exception throwed.
+
+--> time.sleep("> wait time (seconds) here <")
+
+* Even its a very low possibility, sometimes code could crash in headless mode.
+To be sure and prevent this, set false the headless chrome option.
+
+--> self.browserProfile.headless = False
+"""
+
 class SpotifyMusicDownloader:
 
     def __init__ (self):
         ## CHROME OPTIONS ##
         self.browserProfile = webdriver.ChromeOptions()
-        self.browserProfile.headless = True
+        self.browserProfile.headless = True # HEADLESS
         self.browserProfile.add_argument("--log-level=3")
         self.browserProfile.add_argument('--lang=en')
         self.browserProfile.add_argument("--disable-notifications")
@@ -140,7 +152,7 @@ class SpotifyMusicDownloader:
         time.sleep(3) # WAIT TIMES ARE DEPENDS ON INTERNET CONNECTION SPEED
 
         totalTrackText = self.browser.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/main/div/section/div[1]/div[5]/div/span').text
-        if "like" in totalTrackText: #                           
+        if "like" in totalTrackText:                           
             totalTrackText = self.browser.find_element(By.XPATH,'//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/main/div/section/div[1]/div[5]/div/span[2]').text
         
         totalTrackSplitedText = str(totalTrackText).split()
@@ -152,8 +164,8 @@ class SpotifyMusicDownloader:
 
         currentTrackNum = 2
         while currentTrackNum <= self.totalTrackNum+1:
-            selectedTrackName = self.browser.find_element(By.XPATH, f'//*[@aria-rowindex="{currentTrackNum}"]/div/div[2]/div/div')
-            selectedTrackArtist = self.browser.find_element(By.XPATH, f'//*[@aria-rowindex="{currentTrackNum}"]/div/div[2]/div/span')
+            selectedTrackName = self.browser.find_element(By.XPATH, f'//*[@aria-rowindex="{currentTrackNum}"]/div//a')
+            selectedTrackArtist = self.browser.find_element(By.XPATH, f'//*[@aria-rowindex="{currentTrackNum}"]/div/div[2]//span')
 
             if selectedTrackArtist.text == "E": # prevents explicit content icon
                 selectedTrackArtist = self.browser.find_element(By.XPATH, f'//*[@aria-rowindex="{currentTrackNum}"]/div/div[2]/div/span[2]')
