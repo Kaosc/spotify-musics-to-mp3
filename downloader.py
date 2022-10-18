@@ -24,7 +24,7 @@ please increase the wait times where exception throwed.
 --> time.sleep("> wait time (seconds) here <")
 
 * Even its a very low possibility, sometimes code could crash in headless mode.
-To be sure and prevent this, set false the headless chrome option.
+To be sure and prevent this, set headless mode to false.
 
 --> self.browserProfile.headless = False
 """
@@ -72,7 +72,7 @@ class SpotifyMusicDownloader:
             elif "https://open.spotify.com/playlist" in spotifySongLink:
                 print("%s\nThis is a playlist link! If you want to download a playlist, try the option 1%s" % (fg(1), attr(0)))
             else:
-                print("%s\nSomething wrong with the link. Please try again.\n%s" % (fg(1), attr(0)))
+                print("%s\nSomething wrong with the link. Please be sure it's a valid link.\n%s" % (fg(1), attr(0)))
 
         self.browser = webdriver.Chrome(self.driverPath, chrome_options=self.browserProfile)
         os.system("cls")
@@ -115,7 +115,7 @@ class SpotifyMusicDownloader:
             with YoutubeDL(ydl_opts) as ydl:
                 ydl.download([trackLink])
         except (DownloadError, ExtractorError) :
-            print(f"%sSomethings goes wrong while downloading!%s" % (fg(1), attr(0)))
+            print(f"%sSomething went wrong while downloading!%s" % (fg(1), attr(0)))
 
         os.system('cls')
 
@@ -137,7 +137,7 @@ class SpotifyMusicDownloader:
             elif "https://open.spotify.com/track" in spotifyPlayListLink:
                 print("%s\nThis is not a playlist link. If you want to download just one track, try the option 2%s" % (fg(1), attr(0)))
             else:
-                print("%s\nSomething wrong with the link. Please try again.\n%s" % (fg(46), attr(0)))
+                print("%s\nSomething wrong with this link. Please be sure it's a valid link.\n%s" % (fg(46), attr(0)))
 
         self.browser = webdriver.Chrome(self.driverPath, chrome_options=self.browserProfile)
         action = webdriver.ActionChains(self.browser)
@@ -271,7 +271,7 @@ class SpotifyMusicDownloader:
                 with YoutubeDL(ydl_opts) as ydl:
                     ydl.download([link])
             except (DownloadError, ExtractorError) :
-                print(f"%s[{currentTrackNum+1}/{str(self.totalTrackNum)}] : {self.trackNamesList[currentTrackNum]} : Somethings goes wrong while downloading!%s" % (fg(1), attr(0)))
+                print(f"%s[{currentTrackNum+1}/{str(self.totalTrackNum)}] : {self.trackNamesList[currentTrackNum]} : Something went wrong while downloading!%s" % (fg(1), attr(0)))
 
             os.system('cls')
             currentTrackNum+=1
@@ -310,7 +310,7 @@ while True:
 
         while True:
             dOp = input("""%s 
-    Choose A Download Opiton
+    Choose a download option:
 
     [1] - pytube
     [2] - yt_dlp

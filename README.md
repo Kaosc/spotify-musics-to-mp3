@@ -30,14 +30,13 @@ Pytube
   
  There are 2 download options for downloading playlist. If you like to use "yt-dlp" you need to install FFmpeg.
  
- Installing FFmpeg
+### Installing FFmpeg
  
- #### Git
-    
-    git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
- #### Windows
+Download Link: https://www.ffmpeg.org/download.html
+
+ #### Installition for Windows
  
- Watch this video https://youtu.be/r1AtmY-RMyQ
+ Watch this video: https://youtu.be/r1AtmY-RMyQ
  
 ## Usage
 
