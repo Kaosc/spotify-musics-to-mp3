@@ -8,7 +8,7 @@
 
 ### Chrome Driver
 
- Current Chrome Driver version: 105
+ Current Chrome Driver version: 107
 
  Download the latest [Chrome Driver](https://chromedriver.chromium.org/downloads). It must be the same version of Chrome with in your computer.
  Add chromedriver.exe in to "driver" folder.
