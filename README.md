@@ -44,4 +44,3 @@ Run the "downloader.py", choose prefered download option and paste your spotify 
     self.textPath = Texts/downloaded-links.txt'
     nTextPath = 'Texts/skipped-links.txt'
     self.driverPath = 'driver/chromedriver.exe'
-***
