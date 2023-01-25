@@ -3,8 +3,7 @@ import selenium.common.exceptions as sl_exceptions
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-from pytube import exceptions
-from pytube import YouTube
+from pytube import YouTube, exceptions
 from yt_dlp import YoutubeDL
 from youtube_dl.utils import DownloadError, ExtractorError
 from colored import fg, attr
