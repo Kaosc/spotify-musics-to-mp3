@@ -2,9 +2,10 @@ from __future__ import print_function, unicode_literals
 import selenium.common.exceptions as sl_exceptions
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from pytube import YouTube, exceptions
-from yt_dlp import YoutubeDL
+from youtube_dl import YoutubeDL
 from youtube_dl.utils import DownloadError, ExtractorError
 from colored import fg, attr
 import warnings
@@ -23,7 +24,7 @@ please increase the wait times where exception throwed.
 --> time.sleep("> wait time (seconds) here <")
 
 * Even its a very low possibility, sometimes code could crash in headless mode.
-To be sure and prevent this, set headless mode to false.
+To be sure and prevent this, set headless mode to false. if its needed.
 
 --> self.browserProfile.headless = False
 """
@@ -32,6 +33,7 @@ class SpotifyMusicDownloader:
 
     def __init__ (self):
         ## CHROME OPTIONS ##
+        self.service = Service(_paths.driverPath)
         self.browserProfile = webdriver.ChromeOptions()
         self.browserProfile.headless = True # HEADLESS
         self.browserProfile.add_argument("--log-level=3")
@@ -58,6 +60,9 @@ class SpotifyMusicDownloader:
         self.nTextPath = _paths.nTextPath
         self.driverPath = _paths.driverPath
 
+    def executeChrome(self):
+        self.browser = webdriver.Chrome(service=self.service, options=self.browserProfile)
+
     ## SOLO DOWNLOADER START ##
     def soloDownloader(self):
         os.system("cls")
@@ -70,10 +75,12 @@ class SpotifyMusicDownloader:
                 self.islinkVerified = True
             elif "https://open.spotify.com/playlist" in spotifySongLink:
                 print("%s\nThis is a playlist link! If you want to download a playlist, try the option 1%s" % (fg(1), attr(0)))
+            elif "https://open.spotify.com/album" in spotifySongLink:
+                print("%s\nThis is an album link! If you want to download an album, try the option 1%s" % (fg(1), attr(0)))
             else:
                 print("%s\nSomething wrong with the link. Please be sure it's a valid link.\n%s" % (fg(1), attr(0)))
 
-        self.browser = webdriver.Chrome(self.driverPath, chrome_options=self.browserProfile)
+        self.executeChrome()
         os.system("cls")
 
         print("%s\nGETTING SONG NAME...\n%s" % (fg(46), attr(0)))
@@ -81,7 +88,7 @@ class SpotifyMusicDownloader:
         # SPOTIFY
         self.browser.get(spotifySongLink)
 
-        time.sleep(2) # WAIT TIMES ARE DEPENDS ON INTERNET CONNECTION SPEED
+        time.sleep(2)
 
         trackName = self.browser.find_element(By.TAG_NAME, 'h1').text
         try:
@@ -129,16 +136,18 @@ class SpotifyMusicDownloader:
         os.system("cls")
 
         while self.islinkVerified == False:
-            spotifyPlayListLink = str(input('%s\nPASTE THE PLAYLIST LINK: %s' % (fg(33), attr(0))))
+            spotifyPlayListLink = str(input('%s\nPASTE THE PLAYLIST/ALBUM LINK: %s' % (fg(33), attr(0))))
 
             if "https://open.spotify.com/playlist" in spotifyPlayListLink:
+                self.islinkVerified = True
+            elif "https://open.spotify.com/album" in spotifyPlayListLink:
                 self.islinkVerified = True
             elif "https://open.spotify.com/track" in spotifyPlayListLink:
                 print("%s\nThis is not a playlist link. If you want to download just one track, try the option 2%s" % (fg(1), attr(0)))
             else:
                 print("%s\nSomething wrong with this link. Please be sure it's a valid link.\n%s" % (fg(46), attr(0)))
 
-        self.browser = webdriver.Chrome(self.driverPath, chrome_options=self.browserProfile)
+        self.executeChrome()
         action = webdriver.ActionChains(self.browser)
         os.system("cls")
 
@@ -148,12 +157,20 @@ class SpotifyMusicDownloader:
         self.browser.back()
         self.browser.get(spotifyPlayListLink)
 
-        time.sleep(3) # WAIT TIMES ARE DEPENDS ON INTERNET CONNECTION SPEED
+        time.sleep(3)
 
-        totalTrackText = self.browser.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/main/div/section/div[1]/div[5]/div/span').text
-        if "like" in totalTrackText:                           
-            totalTrackText = self.browser.find_element(By.XPATH,'//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/div/div[2]/main/div/section/div[1]/div[5]/div/span[2]').text
-        
+        mainEl = '//*[@id="main"]/div/div[2]/div[4]/div[1]/div[2]/div[2]/div/'
+        try: 
+            # ALBUM
+            totalTrackText = self.browser.find_element(By.XPATH, mainEl + 'div/div[2]/main/section/div[1]/div[5]/div/span[2]').text
+        except sl_exceptions.NoSuchElementException:
+            # PLAYLIST
+            el = mainEl + 'div/div[2]/main/div[1]/section/div[1]/div[5]/div/'
+
+            totalTrackText = self.browser.find_element(By.XPATH, el + 'span[1]').text
+            if "like" in totalTrackText:                           
+                totalTrackText = self.browser.find_element(By.XPATH, el + 'span[2]').text
+
         totalTrackSplitedText = str(totalTrackText).split()
         self.totalTrackNum = int(totalTrackSplitedText[0])
         
@@ -174,7 +191,7 @@ class SpotifyMusicDownloader:
             self.trackNamesList.append(resultTrack)
             action.key_down(Keys.ARROW_DOWN).perform()
             currentTrackNum+=1
-            time.sleep(0.1) # WAIT TIMES ARE DEPENDS ON INTERNET CONNECTION SPEED
+            time.sleep(0.1)
             
         print("%s\nDONE! %s" % (fg(46), attr(0)))
         self.browser.close()
@@ -182,7 +199,7 @@ class SpotifyMusicDownloader:
 
     ## YOUTUBE START ##
     def getYoutubeLinks(self):
-        self.browser = webdriver.Chrome(self.driverPath, chrome_options=self.browserProfile)
+        self.executeChrome()
         os.system("cls")
 
         file = open(self.textPath,"w")
@@ -192,9 +209,10 @@ class SpotifyMusicDownloader:
         currentTrackNum = 0
         while currentTrackNum < self.totalTrackNum:
             self.browser.get(f'https://www.youtube.com/results?search_query={self.trackNamesList[currentTrackNum]}')
-            time.sleep(1) # WAIT TIMES ARE DEPENDS ON INTERNET CONNECTION SPEED
+            time.sleep(1)
             trackLink = self.browser.find_element(By.XPATH, '//*[@id="dismissible"]/ytd-thumbnail/a').get_attribute("href")
-            print(f"%s[{currentTrackNum+1}/{str(self.totalTrackNum)}] : {self.trackNamesList[currentTrackNum]} : {trackLink} %s" % (fg(98), attr(0)))
+            print(f"{fg(98)}[{currentTrackNum+1}/{str(self.totalTrackNum)}] : {self.trackNamesList[currentTrackNum]} : {trackLink} {attr(0)}")
+
             self.trackLinks.append(str(trackLink))
 
             try:
