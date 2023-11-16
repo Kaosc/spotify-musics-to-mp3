@@ -9,7 +9,7 @@
 ## 1. Python Dependencies
 
 ```bash
-pip install selenium colored pytube youtube_dl
+pip install selenium colored pytube yt-dlp
 ```
 
 or run the `dep-installer.py` file.
@@ -22,15 +22,15 @@ ChromeDriver version must be the same chrome version installed on your system. Y
 
 ## 3. Choose A Download Option
 
-There are 2 download options for downloading playlist. If you like to use "youtube_dl" you need to follow the additional installation steps.
+There are 2 download options for downloading playlist. If you like to use "yt-dlp" you need to follow the additional installation steps.
 
 ### 1. pytube
 
 if you choose to use pytube, there is no additional installation steps for it, so you can skip this step. It will be installed automatically with the other python dependencies.
 
-### 2. youtube_dl
+### 2. yt-dlp
 
-To order to use "youtube_dl" you need to install FFmpeg.
+To order to use "yt-dlp" you need to install FFmpeg.
 
 #### Installing FFmpeg
 
