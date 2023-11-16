@@ -5,8 +5,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from pytube import YouTube, exceptions
-from youtube_dl import YoutubeDL
-from youtube_dl.utils import DownloadError, ExtractorError
+from yt_dlp import YoutubeDL
+from yt_dlp import YoutubeDL
+from yt_dlp.utils import DownloadError, ExtractorError
 from colored import fg, attr
 import warnings
 import _paths
@@ -35,7 +36,7 @@ class SpotifyMusicDownloader:
         ## CHROME OPTIONS ##
         self.service = Service(_paths.driverPath)
         self.browserProfile = webdriver.ChromeOptions()
-        self.browserProfile.headless = True # HEADLESS
+        self.browserProfile.add_argument("--headless") # HEADLESS
         self.browserProfile.add_argument("--log-level=3")
         self.browserProfile.add_argument('--lang=en')
         self.browserProfile.add_argument("--disable-notifications")
@@ -107,7 +108,7 @@ class SpotifyMusicDownloader:
         print("%s\nDOWNLOADING...\n%s" % (fg(46), attr(0)))
 
         # DOWNLOAD
-        ydl_opts = {
+        options = {
             'format': 'bestaudio/best',
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
@@ -118,7 +119,7 @@ class SpotifyMusicDownloader:
         }
 
         try:
-            with YoutubeDL(ydl_opts) as ydl:
+            with YoutubeDL(options) as ydl:
                 ydl.download([trackLink])
         except (DownloadError, ExtractorError) :
             print(f"%sSomething went wrong while downloading!%s" % (fg(1), attr(0)))
@@ -159,7 +160,7 @@ class SpotifyMusicDownloader:
 
         time.sleep(3)
 
-        mainEl = '//*[@id="main"]/div/div[2]/div[4]/div[1]/div[2]/div[2]/div/'
+        mainEl = '//*[@id="main"]/div/div[2]/div[3]/div[1]/div[2]/div[2]/div/'
         try: 
             # ALBUM
             totalTrackText = self.browser.find_element(By.XPATH, mainEl + 'div/div[2]/main/section/div[1]/div[5]/div/span[2]').text
@@ -269,7 +270,7 @@ class SpotifyMusicDownloader:
         
         print("%s\nDownloading Songs... This may take some time.\n%s" % (fg(2), attr(0)))
 
-        ydl_opts = {
+        options = {
             'format': 'bestaudio/best',
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
@@ -285,7 +286,7 @@ class SpotifyMusicDownloader:
             print(f"%s[{currentTrackNum+1}/{str(self.totalTrackNum)}]: {self.trackNamesList[currentTrackNum]} : Downloading%s" % (fg(99), attr(0)))
 
             try:
-                with YoutubeDL(ydl_opts) as ydl:
+                with YoutubeDL(options) as ydl:
                     ydl.download([link])
             except (DownloadError, ExtractorError) :
                 print(f"%s[{currentTrackNum+1}/{str(self.totalTrackNum)}] : {self.trackNamesList[currentTrackNum]} : Something went wrong while downloading!%s" % (fg(1), attr(0)))
@@ -330,7 +331,7 @@ while True:
     Choose a download option:
 
     [1] - pytube
-    [2] - yt_dlp
+    [2] - yt-dlp
 
     Enter Number: %s""" % (fg(105), attr(0)))
 
