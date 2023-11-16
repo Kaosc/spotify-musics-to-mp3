@@ -67,7 +67,7 @@ driverPath = 'driver/chromedriver.exe'
 - [Selenium](
     https://github.com/SeleniumHQ/Selenium) 
 - [Colored](
-    hthttps://gitlab.com/dslackw/colored)
+    https://gitlab.com/dslackw/colored)
 - [Pytube](
     https://github.com/pytube/pytube)
 - [yt-dlp](
