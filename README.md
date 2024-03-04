@@ -16,7 +16,7 @@ or run the `dep-installer.py` file.
 
 ## 2. Chrome Driver
 
-Current ChromeDriver version is 119. Please check [here](https://googlechromelabs.github.io/chrome-for-testing/) for the latest version.
+Current ChromeDriver version is 122. Please check [here](https://googlechromelabs.github.io/chrome-for-testing/) for the latest version.
 
 ChromeDriver version must be the same chrome version installed on your system. You can check your installed chrome version via Settings > About Chrome.
 
@@ -58,17 +58,14 @@ textPath = 'Texts/downloaded-links.txt'
 nTextPath = 'Texts/skipped-links.txt'
 driverPath = 'driver/chromedriver.exe'
 ```
+
 ## Console Look
 
 ![console look](./assets/console.png)
 
 ## Links to the repositories of the libraries used in this tool
 
-- [Selenium](
-    https://github.com/SeleniumHQ/Selenium) 
-- [Colored](
-    https://gitlab.com/dslackw/colored)
-- [Pytube](
-    https://github.com/pytube/pytube)
-- [yt-dlp](
-    https://github.com/yt-dlp/yt-dlp)
+- [Selenium](https://github.com/SeleniumHQ/Selenium)
+- [Colored](https://gitlab.com/dslackw/colored)
+- [Pytube](https://github.com/pytube/pytube)
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp)
