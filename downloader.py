@@ -1,4 +1,10 @@
 from __future__ import print_function, unicode_literals
+import warnings
+import _paths
+import time
+import sys
+import os
+
 import selenium.common.exceptions as sl_exceptions
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -9,26 +15,9 @@ from yt_dlp import YoutubeDL
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError, ExtractorError
 from colored import fg, attr
-import warnings
-import _paths
-import time
-import sys
-import os
 
 ## IGNORE CONSOLE WARNINGS ##
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-"""
-* The code may give error depends on your internet connection. In this case
-please increase the wait times where exception throwed.
-
---> time.sleep("> wait time (seconds) here <")
-
-* Even its a very low possibility, sometimes code could crash in headless mode.
-To be sure and prevent this, set headless mode to false. if its needed.
-
---> self.browserProfile.headless = False
-"""
 
 class SpotifyMusicDownloader:
 
@@ -308,6 +297,11 @@ class SpotifyMusicDownloader:
             self.pytube()
         elif downloadOption == "2":
             self.youtubedl()
+
+        # Cleanup
+        self.trackLinks= []
+        self.trackNamesList = []
+        self.islinkVerified = False
     ## EXECUTE END ##
 
 spmd = SpotifyMusicDownloader()
@@ -316,7 +310,7 @@ while True:
     print("")
     print("%s - - - SPOTIFY MUSIC DOWNLOADER - - - %s" % (fg(82), attr(0)))
     opt = input("""%s
-    [1] - Download Playlist
+    [1] - Download Playlist/Album
     [2] - Download Song
     [3] - Exit \n
     Enter Number: %s""" % (fg(82), attr(0)))
