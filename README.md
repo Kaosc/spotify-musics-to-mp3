@@ -16,7 +16,7 @@ or run the `dep-installer.py` file.
 
 ## 2. Chrome Driver
 
-Current ChromeDriver version is 122. Please check [here](https://googlechromelabs.github.io/chrome-for-testing/) for the latest version.
+Current ChromeDriver version is 125. Please check [here](https://googlechromelabs.github.io/chrome-for-testing/) for the latest version.
 
 ChromeDriver version must be the same chrome version installed on your system. You can check your installed chrome version via Settings > About Chrome.
 
