@@ -9,28 +9,26 @@
 ## 1. Python Dependencies
 
 ```bash
-pip install selenium colored pytube yt-dlp
+pip install selenium colored yt-dlp
 ```
 
 or run the `dep-installer.py` file.
 
-## 2. Chrome Driver
+## 2. Setting Up Chrome Driver
 
-Current ChromeDriver version is 125. Please check [here](https://googlechromelabs.github.io/chrome-for-testing/) for the latest version.
+The current version of ChromeDriver in this repository is **129**. To ensure compatibility, please check for the latest ChromeDriver version [here](https://googlechromelabs.github.io/chrome-for-testing/).
+
+If a newer version is available:
+1. Download the latest ChromeDriver.
+2. Replace the existing file in the `driver` folder with the newly downloaded version.
+
+**Note**: If you don't have Chrome installed on your system, make sure to install it before proceeding.
 
 ChromeDriver version must be the same chrome version installed on your system. You can check your installed chrome version via Settings > About Chrome.
 
-## 3. Choose A Download Option
+## 3. Installing FFmpeg 
 
-There are 2 download options for downloading playlist. If you like to use "yt-dlp" you need to follow the additional installation steps.
-
-### 1. pytube
-
-if you choose to use pytube, there is no additional installation steps for it, so you can skip this step. It will be installed automatically with the other python dependencies.
-
-### 2. yt-dlp
-
-To order to use "yt-dlp" you need to install FFmpeg.
+To order to use "yt-dlp" (it's a library for downloading youtube videos, audio, etc.) you need to install FFmpeg.
 
 #### Installing FFmpeg
 
@@ -67,5 +65,5 @@ driverPath = 'driver/chromedriver.exe'
 
 - [Selenium](https://github.com/SeleniumHQ/Selenium)
 - [Colored](https://gitlab.com/dslackw/colored)
-- [Pytube](https://github.com/pytube/pytube)
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp)
+- [FFmpeg](https://ffmpeg.org/)
