@@ -1,4 +1,4 @@
-# Download spotify playlist/albums or just a spesific tracks as a mp3 file without API key requirements
+# Spotify MP3 Downloader
 
 ## Preview
 
